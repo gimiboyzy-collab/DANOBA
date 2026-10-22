@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="DANOBA Cleaning Solutions: hand wash, dishwash liquid and liquid laundry soap in 350ml to 5L sizes.">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>DANOBA Cleaning Solutions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: logo header, hero with real product photo, three product cards, size strip, photo gallery, contact + order message builder. Colors come from the DANOBA sticker: navy, sky blue, leaf green. */
+:root {
+  --bg: #f4f8fd;
+  --surface: #ffffff;
+  --fg: #14236b;
+  --muted: #4a5a86;
+  --line: #d3dff2;
+  --blue: #1b6fd6;
+  --blue-tint: #dcebfb;
+  --green: #3a9a2c;
+  --green-tint: #e2f3dc;
+  --logo-bg: #ffffff;
+  --cta-bg: #14236b;
+  --cta-fg: #ffffff;
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a1230; --surface: #121c45; --fg: #e8eefc; --muted: #9fb0da; --line: #25336b;
+    --blue: #6db3ff; --blue-tint: #17265a; --green: #86d572; --green-tint: #16301a;
+    --logo-bg: #ffffff; --cta-bg: #6db3ff; --cta-fg: #0a1230;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a1230; --surface: #121c45; --fg: #e8eefc; --muted: #9fb0da; --line: #25336b;
+  --blue: #6db3ff; --blue-tint: #17265a; --green: #86d572; --green-tint: #16301a;
+  --logo-bg: #ffffff; --cta-bg: #6db3ff; --cta-fg: #0a1230;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+p { margin: 0; }
+a { color: inherit; }
+img { display: block; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 56px;
+}
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+
+/* top bar */
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand .logo { background: var(--logo-bg); border-radius: 12px; padding: 4px 8px; }
+.brand img { height: 44px; width: auto; }
+.brand b { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; line-height: 1.15; }
+.nav { display: flex; flex-wrap: wrap; gap: 6px 22px; font-weight: 500; font-size: 15px; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--fg); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1fr 1.05fr; gap: 36px; align-items: center; padding-block: 24px 64px; }
+.hero > * { min-width: 0; }
+.hero h1 { font-size: clamp(40px, 7.4vw, 78px); font-weight: 800; }
+.hero h1 em { font-style: normal; color: var(--blue); }
+.hero p.lead { font-size: 19px; color: var(--muted); max-width: 46ch; margin-top: 20px; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn { display: inline-block; font: 600 16px/1 var(--body); padding: 16px 24px; border-radius: 999px; text-decoration: none; border: 2px solid var(--cta-bg); background: var(--cta-bg); color: var(--cta-fg); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.btn.small { padding: 10px 16px; font-size: 14px; }
+.btn:hover { transform: translateY(-1px); }
+.hero .photo { position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--blue-tint); }
+.hero .photo img { width: 100%; height: 100%; object-fit: cover; }
+@media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } }
+
+/* sections */
+.section-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; max-width: 60ch; }
+.section-head h2 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; }
+
+/* products */
+.products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.product { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; min-width: 0; }
+.product .pic { aspect-ratio: 1 / 1; background: var(--blue-tint); }
+.product .pic img { width: 100%; height: 100%; object-fit: cover; }
+.product.hand .pic img { object-position: 50% 62%; }
+.product.dish .pic img { object-position: 50% 40%; }
+.product .body { display: flex; flex-direction: column; gap: 14px; padding: 22px; flex: 1; }
+.product h3 { font-size: 26px; font-weight: 800; }
+.product .body > p { color: var(--muted); }
+.product ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.product li { display: grid; grid-template-columns: 14px 1fr; gap: 10px; align-items: start; font-size: 16px; }
+.product li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border-radius: 50%; background: var(--green); }
+.product .btn { align-self: flex-start; margin-top: auto; }
+
+/* sizes */
+.sizesband { background: var(--blue-tint); }
+.sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.size { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 12px; text-align: center; min-width: 0; }
+.size b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(24px, 4vw, 38px); color: var(--blue); font-variant-numeric: tabular-nums; }
+.size span { font-size: 14px; color: var(--muted); }
+.sizesband p.note { margin-top: 18px; color: var(--muted); max-width: 60ch; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.gallery figure { margin: 0; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--blue-tint); min-width: 0; }
+.gallery img { width: 100%; height: 100%; object-fit: cover; }
+.gallery p { margin-top: 16px; color: var(--muted); max-width: 60ch; }
+
+/* contact + order */
+.contactband { background: var(--green-tint); }
+.contact { display: grid; grid-template-columns: .95fr 1.05fr; gap: 40px; align-items: start; }
+.contact > * { min-width: 0; }
+.contact h2 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; margin-top: 10px; }
+.contact .intro > p { margin-top: 16px; color: var(--muted); max-width: 42ch; }
+.channels { display: grid; gap: 12px; margin-top: 24px; }
+.channel { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+.channel .what { display: grid; min-width: 0; }
+.channel small { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.channel strong { font-family: var(--display); font-size: 22px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.channel .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+form { display: grid; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 24px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; min-width: 0; }
+input, select, textarea { font: 500 16px/1.3 var(--body); color: var(--fg); background: var(--bg); border: 1.5px solid var(--line); border-radius: 12px; padding: 13px 14px; width: 100%; min-width: 0; }
+textarea { min-height: 84px; resize: vertical; }
+.result { display: grid; gap: 12px; margin-top: 16px; }
+.result pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: 500 15px/1.5 var(--body); background: var(--surface); border: 1.5px dashed var(--blue); border-radius: 12px; padding: 14px; }
+.result .hint { font-size: 14px; color: var(--muted); }
+.formnote { font-size: 14px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 28px; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .products { grid-template-columns: 1fr; }
+  .product { flex-direction: row; }
+  .product .pic { width: 42%; aspect-ratio: auto; flex: none; }
+  .contact { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr 1fr; }
+  .wrap { padding-block: 40px; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .product { flex-direction: column; }
+  .product .pic { width: 100%; aspect-ratio: 4 / 3; }
+  .sizes { grid-template-columns: repeat(3, 1fr); }
+  .row { grid-template-columns: 1fr; }
+  .brand b { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <a class="brand" href="#top" aria-label="DANOBA Cleaning Solutions">
+    <span class="logo"><img src="img/logo.png" alt="DANOBA logo" width="755" height="567"></span>
+    <b>Cleaning<br>Solutions</b>
+  </a>
+  <nav class="nav" aria-label="Main">
+    <a href="#products">Products</a>
+    <a href="#sizes">Sizes</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="wrap hero">
+    <div>
+      <p class="eyebrow">DANOBA Cleaning Solutions</p>
+      <h1>Clean hands, clean dishes, <em>clean clothes.</em></h1>
+      <p class="lead">Hand wash, dishwash liquid and liquid laundry soap, packed from 350ml bottles to 5 litre jerrycans. For homes, shops and businesses.</p>
+      <div class="actions">
+        <a class="btn" href="#contact">Place an order</a>
+        <a class="btn ghost" href="#products">See the products</a>
+      </div>
+    </div>
+    <div class="photo">
+      <img src="img/hero.jpg" alt="DANOBA dishwash and hand wash bottles stacked in packs" width="1200" height="900">
+    </div>
+  </section>
+
+  <section id="products" class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Our products</p>
+      <h2>Three soaps for every day</h2>
+    </div>
+    <div class="products">
+      <article class="product hand">
+        <div class="pic"><img src="img/hand.jpg" alt="DANOBA hand wash in a 500ml pump bottle" loading="lazy" width="900" height="1200"></div>
+        <div class="body">
+          <h3>Hand Wash</h3>
+          <p>Liquid hand wash in a pump bottle.</p>
+          <ul>
+            <li>Pump bottle, easy to use with one hand</li>
+            <li>Several colors, including pink and orange</li>
+            <li>Right for bathrooms, kitchens and shop counters</li>
+          </ul>
+          <button class="btn" type="button" data-pick="Hand wash">Order hand wash</button>
+        </div>
+      </article>
+      <article class="product dish">
+        <div class="pic"><img src="img/dish.jpg" alt="DANOBA dishwash liquid in 750ml bottles" loading="lazy" width="1000" height="815"></div>
+        <div class="body">
+          <h3>Dishwash Liquid</h3>
+          <p>Powerful grease cutting for plates, pots and cups.</p>
+          <ul>
+            <li>Tough on grease, gentle on hands</li>
+            <li>Sparkling shine on dishes</li>
+            <li>Green and blue, in a flip-cap bottle</li>
+          </ul>
+          <button class="btn" type="button" data-pick="Dishwash liquid">Order dishwash</button>
+        </div>
+      </article>
+      <article class="product laundry">
+        <div class="pic"><img src="img/laundry.jpg" alt="DANOBA liquid laundry soap in a 1 litre jerrycan" loading="lazy" width="640" height="640"></div>
+        <div class="body">
+          <h3>Liquid Laundry Soap</h3>
+          <p>For washing clothes, in jerrycans and pump bottles.</p>
+          <ul>
+            <li>1 litre and 5 litre jerrycans</li>
+            <li>Blue and white jerrycans</li>
+            <li>5 litre size for heavy use</li>
+          </ul>
+          <button class="btn" type="button" data-pick="Liquid laundry soap">Order laundry soap</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="sizesband" id="sizes">
+    <section class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Sizes</p>
+        <h2>Pick the size that fits</h2>
+      </div>
+      <div class="sizes">
+        <div class="size"><b>350</b><span>millilitres</span></div>
+        <div class="size"><b>500</b><span>millilitres</span></div>
+        <div class="size"><b>750</b><span>millilitres</span></div>
+        <div class="size"><b>1</b><span>litre</span></div>
+        <div class="size"><b>5</b><span>litres</span></div>
+      </div>
+      <p class="note">Ask which sizes are in stock for each product. Shops, restaurants, hotels and offices can order in bulk packs.</p>
+    </section>
+  </div>
+
+  <section class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">In stock</p>
+      <h2>Packed and ready for your shelf</h2>
+    </div>
+    <div class="gallery">
+      <figure><img src="img/g-packs.jpg" alt="Shrink-wrapped packs of DANOBA dishwash and hand wash" loading="lazy" width="1000" height="750"></figure>
+      <figure><img src="img/g-jerry.jpg" alt="5 litre DANOBA jerrycans" loading="lazy" width="1000" height="750"></figure>
+      <figure><img src="img/g-pump.jpg" alt="DANOBA pump bottles in orange and yellow" loading="lazy" width="800" height="1067"></figure>
+      <figure><img src="img/g-bulk.jpg" alt="Bundled DANOBA jerrycans" loading="lazy" width="1000" height="750"></figure>
+    </div>
+    <p style="margin-top:16px;color:var(--muted);max-width:60ch">Every bottle carries the DANOBA label, and bottles are wrapped in bundles for easy carrying and resale.</p>
+  </section>
+
+  <div class="contactband" id="contact">
+    <section class="wrap contact">
+      <div class="intro">
+        <p class="eyebrow">Contact and orders</p>
+        <h2>Call, message or visit</h2>
+        <p>Tell us the product, size and quantity. We will reply with the price and how to get your order.</p>
+        <div class="channels">
+          <div class="channel">
+            <div class="what"><small>Phone</small><strong id="p1">+251 927 544 409</strong></div>
+            <div class="acts">
+              <a class="btn small" href="tel:+251927544409">Call</a>
+              <button class="btn small ghost" type="button" data-copy="+251927544409">Copy</button>
+            </div>
+          </div>
+          <div class="channel">
+            <div class="what"><small>Phone</small><strong id="p2">+251 913 067 588</strong></div>
+            <div class="acts">
+              <a class="btn small" href="tel:+251913067588">Call</a>
+              <button class="btn small ghost" type="button" data-copy="+251913067588">Copy</button>
+            </div>
+          </div>
+          <div class="channel">
+            <div class="what"><small>Telegram</small><strong>DANOBA on Telegram</strong></div>
+            <div class="acts"><a class="btn small" href="https://t.me/+_uCdSLae94YzNzA0">Open Telegram</a></div>
+          </div>
+          <div class="channel">
+            <div class="what"><small>Location</small><strong>China Garage area</strong></div>
+            <div class="acts"><a class="btn small" href="https://maps.app.goo.gl/PwkaGptPFfbVbY2V8">Open in Maps</a></div>
+          </div>
+        </div>
+        <p class="formnote" id="copyNote" style="margin-top:12px" aria-live="polite"></p>
+      </div>
+      <div>
+        <form id="orderForm" novalidate>
+          <div class="row">
+            <label for="name">Your name<input id="name" name="name" type="text" autocomplete="name" placeholder="Full name"></label>
+            <label for="phone">Your phone<input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Phone number"></label>
+          </div>
+          <div class="row">
+            <label for="product">Product
+              <select id="product" name="product">
+                <option>Hand wash</option>
+                <option>Dishwash liquid</option>
+                <option>Liquid laundry soap</option>
+                <option>More than one product</option>
+              </select>
+            </label>
+            <label for="size">Size
+              <select id="size" name="size">
+                <option>350ml</option>
+                <option>500ml</option>
+                <option>750ml</option>
+                <option>1L</option>
+                <option>5L</option>
+                <option>Not sure yet</option>
+              </select>
+            </label>
+          </div>
+          <label for="qty">Quantity<input id="qty" name="qty" type="text" placeholder="e.g. 24 bottles"></label>
+          <label for="note">Notes<textarea id="note" name="note" placeholder="Color, delivery area, or anything else"></textarea></label>
+          <button class="btn" type="submit">Write my order message</button>
+          <p class="formnote">This builds a message you copy and send to us by phone, Telegram or SMS.</p>
+        </form>
+        <div class="result" id="result" hidden aria-live="polite">
+          <pre id="msg"></pre>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+            <button class="btn" type="button" id="copyBtn">Copy message</button>
+            <span class="hint" id="copyHint"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>DANOBA Cleaning Solutions</span>
+    <span>Hand wash · Dishwash liquid · Liquid laundry soap</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById("orderForm");
+  var result = document.getElementById("result");
+  var msg = document.getElementById("msg");
+  var hint = document.getElementById("copyHint");
+  var note = document.getElementById("copyNote");
+  var product = document.getElementById("product");
+
+  function copy(text, onOk, onFail) {
+    try {
+      navigator.clipboard.writeText(text).then(onOk, onFail);
+    } catch (err) { onFail(); }
+  }
+
+  document.querySelectorAll("[data-pick]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      product.value = b.getAttribute("data-pick");
+      document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+      setTimeout(function () { document.getElementById("name").focus({ preventScroll: true }); }, 450);
+    });
+  });
+
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var n = b.getAttribute("data-copy");
+      copy(n, function () { note.textContent = "Copied " + n; }, function () { note.textContent = "Press and hold the number to copy it."; });
+    });
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var lines = ["Hello DANOBA, I would like to order:", ""];
+    lines.push("Product: " + v("product"));
+    lines.push("Size: " + v("size"));
+    if (v("qty")) lines.push("Quantity: " + v("qty"));
+    if (v("note")) lines.push("Notes: " + v("note"));
+    lines.push("");
+    if (v("name")) lines.push("Name: " + v("name"));
+    if (v("phone")) lines.push("Phone: " + v("phone"));
+    msg.textContent = lines.join("\n");
+    result.hidden = false;
+    hint.textContent = "";
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var fallback = function () {
+      var r = document.createRange(); r.selectNodeContents(msg);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      hint.textContent = "Message selected. Use your device's copy option.";
+    };
+    copy(msg.textContent, function () { hint.textContent = "Copied. Now send it to us."; }, fallback);
+  });
+})();
+</script>
+</body>
+</html>
