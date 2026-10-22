@@ -301,7 +301,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <form id="orderForm" novalidate>
           <div class="row">
             <label for="name">Your name<input id="name" name="name" type="text" autocomplete="name" placeholder="Full name"></label>
-            <label for="phone">Your phone<input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Phone number"></label>
+            <label for="phone">Your phone (required)<input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Phone number"></label>
           </div>
           <div class="row">
             <label for="product">Product
@@ -325,8 +325,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </div>
           <label for="qty">Quantity<input id="qty" name="qty" type="text" placeholder="e.g. 24 bottles"></label>
           <label for="note">Notes<textarea id="note" name="note" placeholder="Color, delivery area, or anything else"></textarea></label>
-          <button class="btn" type="submit">Write my order message</button>
-          <p class="formnote">This builds a message you copy and send to us by phone, Telegram or SMS.</p>
+          <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="website">Website<input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+          <button class="btn" type="submit" id="sendBtn">Send order to DANOBA</button>
+          <p class="formnote" id="statusMsg" aria-live="polite">Your order goes straight to us on Telegram. We will call you to confirm.</p>
         </form>
         <div class="result" id="result" hidden aria-live="polite">
           <pre id="msg"></pre>
@@ -377,20 +378,48 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     });
   });
 
+  var ORDER_URL = "https://danoba-orders1.1kelectrical1616.workers.dev";
+  var sendBtn = document.getElementById("sendBtn");
+  var statusEl = document.getElementById("statusMsg");
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var v = function (id) { return document.getElementById(id).value.trim(); };
+    if (!v("phone")) {
+      statusEl.textContent = "Please enter your phone number so we can reach you.";
+      document.getElementById("phone").focus();
+      return;
+    }
+    var data = { name: v("name"), phone: v("phone"), product: v("product"), size: v("size"), qty: v("qty"), note: v("note"), website: v("website") };
     var lines = ["Hello DANOBA, I would like to order:", ""];
-    lines.push("Product: " + v("product"));
-    lines.push("Size: " + v("size"));
-    if (v("qty")) lines.push("Quantity: " + v("qty"));
-    if (v("note")) lines.push("Notes: " + v("note"));
+    lines.push("Product: " + data.product);
+    lines.push("Size: " + data.size);
+    if (data.qty) lines.push("Quantity: " + data.qty);
+    if (data.note) lines.push("Notes: " + data.note);
     lines.push("");
-    if (v("name")) lines.push("Name: " + v("name"));
-    if (v("phone")) lines.push("Phone: " + v("phone"));
+    if (data.name) lines.push("Name: " + data.name);
+    lines.push("Phone: " + data.phone);
     msg.textContent = lines.join("\n");
-    result.hidden = false;
-    hint.textContent = "";
+    result.hidden = true;
+    sendBtn.disabled = true;
+    statusEl.textContent = "Sending your order...";
+    fetch(ORDER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(function (r) {
+      return r.json().then(function (j) { return r.ok && j.ok; });
+    }).then(function (ok) {
+      if (!ok) throw new Error("not sent");
+      statusEl.textContent = "Order sent. Thank you. We will call you soon to confirm.";
+      form.reset();
+    }).catch(function () {
+      statusEl.textContent = "We could not send your order. Copy the message below and send it to us on Telegram, or call us.";
+      result.hidden = false;
+      hint.textContent = "";
+    }).then(function () {
+      sendBtn.disabled = false;
+    });
   });
 
   document.getElementById("copyBtn").addEventListener("click", function () {
