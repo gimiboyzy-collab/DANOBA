@@ -181,6 +181,14 @@ textarea { min-height: 84px; resize: vertical; }
 .result .hint { font-size: 14px; color: var(--muted); }
 .formnote { font-size: 14px; color: var(--muted); }
 
+.cart { background: var(--bg); border: 1.5px dashed var(--line); border-radius: 16px; padding: 14px 16px; display: grid; gap: 10px; }
+.cart h3 { font-size: 18px; font-weight: 700; }
+.cart .empty { color: var(--muted); font-size: 14px; }
+.cart ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cart li { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.cart li span { min-width: 0; overflow-wrap: anywhere; font-weight: 500; font-size: 15px; }
+.cart li small { color: var(--muted); font-weight: 400; }
+.cart .rm { flex: none; font: 600 13px/1 var(--body); color: var(--fg); background: transparent; border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
 footer { border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 28px; color: var(--muted); font-size: 14px; }
 
@@ -364,16 +372,11 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div>
         <form id="orderForm" novalidate>
           <div class="row">
-            <label for="name">Your name<input id="name" name="name" type="text" autocomplete="name" placeholder="Full name"></label>
-            <label for="phone">Your phone (required)<input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Phone number"></label>
-          </div>
-          <div class="row">
             <label for="product">Product
               <select id="product" name="product">
                 <option>Hand wash</option>
                 <option>Dishwash liquid</option>
                 <option>Liquid laundry soap</option>
-                <option>More than one product</option>
               </select>
             </label>
             <label for="size">Size
@@ -383,12 +386,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
                 <option>750ml</option>
                 <option>1L</option>
                 <option>5L</option>
-                <option>Not sure yet</option>
               </select>
             </label>
           </div>
-          <label for="qty">Quantity<input id="qty" name="qty" type="text" placeholder="e.g. 24 bottles"></label>
-          <label for="note">Notes<textarea id="note" name="note" placeholder="Color, delivery area, or anything else"></textarea></label>
+          <div class="row">
+            <label for="color">Color<select id="color" name="color"></select></label>
+            <label for="qty">Quantity<input id="qty" name="qty" type="number" inputmode="numeric" min="1" max="9999" value="1"></label>
+          </div>
+          <button class="btn ghost" type="button" id="addBtn">+ Add to cart</button>
+
+          <div class="cart" id="cart" aria-live="polite">
+            <h3>Your cart</h3>
+            <p class="empty" id="cartEmpty">Nothing yet. Choose a product above and tap Add to cart.</p>
+            <ul id="cartList"></ul>
+          </div>
+
+          <label for="phone">Your phone number (required)<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0912 345 678"></label>
+          <label for="note">Notes (optional)<textarea id="note" name="note" placeholder="Delivery area or anything else"></textarea></label>
           <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="website">Website<input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
           <button class="btn" type="submit" id="sendBtn">Send order to DANOBA</button>
           <p class="formnote" id="statusMsg" aria-live="polite">Your order goes straight to us on Telegram. We will call you to confirm.</p>
@@ -414,24 +428,89 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
 <script>
 (function () {
+  var ORDER_URL = "https://danoba-orders1.1kelectrical1616.workers.dev";
+  var COLORS = {
+    "Hand wash": ["Pink", "Orange", "Yellow", "Any color"],
+    "Dishwash liquid": ["Green", "Blue", "Yellow", "Any color"],
+    "Liquid laundry soap": ["Blue jerrycan", "White jerrycan", "Any color"]
+  };
   var form = document.getElementById("orderForm");
+  var product = document.getElementById("product");
+  var sizeEl = document.getElementById("size");
+  var colorEl = document.getElementById("color");
+  var qtyEl = document.getElementById("qty");
+  var cartList = document.getElementById("cartList");
+  var cartEmpty = document.getElementById("cartEmpty");
+  var sendBtn = document.getElementById("sendBtn");
+  var statusEl = document.getElementById("statusMsg");
   var result = document.getElementById("result");
   var msg = document.getElementById("msg");
   var hint = document.getElementById("copyHint");
   var note = document.getElementById("copyNote");
-  var product = document.getElementById("product");
+  var cart = [];
+
+  function fillColors() {
+    var list = COLORS[product.value] || ["Any color"];
+    colorEl.textContent = "";
+    list.forEach(function (c) {
+      var o = document.createElement("option");
+      o.textContent = c;
+      colorEl.appendChild(o);
+    });
+  }
+  product.addEventListener("change", fillColors);
+  fillColors();
+
+  function qtyValue() {
+    var n = parseInt(qtyEl.value, 10);
+    if (!n || n < 1) n = 1;
+    if (n > 9999) n = 9999;
+    return n;
+  }
+
+  function renderCart() {
+    cartList.textContent = "";
+    cartEmpty.hidden = cart.length > 0;
+    cart.forEach(function (it, i) {
+      var li = document.createElement("li");
+      var s = document.createElement("span");
+      s.textContent = it.qty + " x " + it.product + " ";
+      var sm = document.createElement("small");
+      sm.textContent = it.size + ", " + it.color;
+      s.appendChild(sm);
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "rm";
+      b.textContent = "Remove";
+      b.setAttribute("aria-label", "Remove " + it.product + " " + it.size);
+      b.addEventListener("click", function () { cart.splice(i, 1); renderCart(); });
+      li.appendChild(s);
+      li.appendChild(b);
+      cartList.appendChild(li);
+    });
+  }
+
+  function currentItem() {
+    return { product: product.value, size: sizeEl.value, color: colorEl.value, qty: qtyValue() };
+  }
+
+  document.getElementById("addBtn").addEventListener("click", function () {
+    if (cart.length >= 20) { statusEl.textContent = "The cart is full. Please send this order first."; return; }
+    cart.push(currentItem());
+    qtyEl.value = 1;
+    renderCart();
+    statusEl.textContent = "Added to cart. Add more items, or enter your phone number and send.";
+  });
 
   function copy(text, onOk, onFail) {
-    try {
-      navigator.clipboard.writeText(text).then(onOk, onFail);
-    } catch (err) { onFail(); }
+    try { navigator.clipboard.writeText(text).then(onOk, onFail); } catch (err) { onFail(); }
   }
 
   document.querySelectorAll("[data-pick]").forEach(function (b) {
     b.addEventListener("click", function () {
       product.value = b.getAttribute("data-pick");
+      fillColors();
       document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
-      setTimeout(function () { document.getElementById("name").focus({ preventScroll: true }); }, 450);
     });
   });
 
@@ -442,27 +521,27 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     });
   });
 
-  var ORDER_URL = "https://danoba-orders1.1kelectrical1616.workers.dev";
-  var sendBtn = document.getElementById("sendBtn");
-  var statusEl = document.getElementById("statusMsg");
-
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    if (!v("phone")) {
+    var phone = document.getElementById("phone").value.trim();
+    if (!phone) {
       statusEl.textContent = "Please enter your phone number so we can reach you.";
       document.getElementById("phone").focus();
       return;
     }
-    var data = { name: v("name"), phone: v("phone"), product: v("product"), size: v("size"), qty: v("qty"), note: v("note"), website: v("website") };
+    if (cart.length === 0) { cart.push(currentItem()); renderCart(); }
+    var data = {
+      items: cart.slice(),
+      phone: phone,
+      note: document.getElementById("note").value.trim(),
+      website: document.getElementById("website").value
+    };
     var lines = ["Hello DANOBA, I would like to order:", ""];
-    lines.push("Product: " + data.product);
-    lines.push("Size: " + data.size);
-    if (data.qty) lines.push("Quantity: " + data.qty);
-    if (data.note) lines.push("Notes: " + data.note);
-    lines.push("");
-    if (data.name) lines.push("Name: " + data.name);
-    lines.push("Phone: " + data.phone);
+    data.items.forEach(function (it, i) {
+      lines.push((i + 1) + ". " + it.qty + " x " + it.product + ", " + it.size + ", " + it.color);
+    });
+    if (data.note) lines.push("", "Notes: " + data.note);
+    lines.push("", "Phone: " + data.phone);
     msg.textContent = lines.join("\n");
     result.hidden = true;
     sendBtn.disabled = true;
@@ -476,7 +555,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     }).then(function (ok) {
       if (!ok) throw new Error("not sent");
       statusEl.textContent = "Order sent. Thank you. We will call you soon to confirm.";
+      cart = [];
+      renderCart();
       form.reset();
+      fillColors();
     }).catch(function () {
       statusEl.textContent = "We could not send your order. Copy the message below and send it to us on Telegram, or call us.";
       result.hidden = false;
@@ -494,6 +576,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     };
     copy(msg.textContent, function () { hint.textContent = "Copied. Now send it to us."; }, fallback);
   });
+
+  renderCart();
 })();
 </script>
 </body>
