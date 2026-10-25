@@ -189,10 +189,21 @@ textarea { min-height: 84px; resize: vertical; }
 .cart li span { min-width: 0; overflow-wrap: anywhere; font-weight: 500; font-size: 15px; }
 .cart li small { color: var(--muted); font-weight: 400; }
 .cart .rm { flex: none; font: 600 13px/1 var(--body); color: var(--fg); background: transparent; border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.pcard { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px 22px; min-width: 0; }
+.pcard h3 { font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+.pcard ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.pcard li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-top: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
+.pcard li:first-child { border-top: 0; }
+.pcard li span { color: var(--muted); font-weight: 500; }
+.pcard li b { font-family: var(--display); font-size: 22px; color: var(--blue); white-space: nowrap; }
+.cart .total { display: flex; justify-content: space-between; gap: 12px; font-weight: 700; font-size: 17px; border-top: 1.5px solid var(--line); padding-top: 10px; font-variant-numeric: tabular-nums; }
+.cart .total b { font-family: var(--display); color: var(--blue); font-size: 20px; }
 footer { border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 28px; color: var(--muted); font-size: 14px; }
 
 @media (max-width: 900px) {
+  .prices { grid-template-columns: 1fr; }
   .hero { grid-template-columns: 1fr; }
   .products { grid-template-columns: 1fr; }
   .product { flex-direction: row; }
@@ -205,7 +216,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   body { font-size: 16px; }
   .product { flex-direction: column; }
   .product .pic { width: 100%; aspect-ratio: 4 / 3; }
-  .sizes { grid-template-columns: repeat(3, 1fr); }
+  
   .row { grid-template-columns: 1fr; }
   .brand b { display: none; }
 }
@@ -235,7 +246,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </a>
   <nav class="nav" aria-label="Main">
     <a href="#products">Products</a>
-    <a href="#sizes">Sizes</a>
+    <a href="#prices">Prices</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
@@ -245,7 +256,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div>
       <p class="eyebrow">DANOBA Cleaning Solutions</p>
       <h1>Clean hands, clean dishes, <em>clean clothes.</em></h1>
-      <p class="lead">Hand wash, dishwash liquid and liquid laundry soap, packed from 350ml bottles to 5 litre jerrycans. For homes, shops and businesses.</p>
+      <p class="lead">Hand wash, dishwash liquid and liquid laundry soap, packed from 500ml bottles to 5 litre jerrycans. For homes, shops and businesses.</p>
       <div class="actions">
         <a class="btn" href="#contact">Place an order</a>
         <a class="btn ghost" href="#products">See the products</a>
@@ -294,7 +305,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <h3>Liquid Laundry Soap</h3>
           <p>For washing clothes, in jerrycans and pump bottles.</p>
           <ul>
-            <li>1 litre and 5 litre jerrycans</li>
+            <li>1, 2 and 5 litre sizes</li>
             <li>Blue and white jerrycans</li>
             <li>5 litre size for heavy use</li>
           </ul>
@@ -305,20 +316,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
 
   <div class="wave blue" aria-hidden="true"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 44 C 220 92 470 2 720 42 C 970 82 1210 8 1440 48 L1440 90 L0 90 Z"/></svg></div>
-  <div class="sizesband" id="sizes">
+  <div class="sizesband" id="prices">
     <section class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Sizes</p>
-        <h2>Pick the size that fits</h2>
+        <p class="eyebrow">Price list</p>
+        <h2>New prices, in birr</h2>
       </div>
-      <div class="sizes">
-        <div class="size"><b>350</b><span>millilitres</span></div>
-        <div class="size"><b>500</b><span>millilitres</span></div>
-        <div class="size"><b>750</b><span>millilitres</span></div>
-        <div class="size"><b>1</b><span>litre</span></div>
-        <div class="size"><b>5</b><span>litres</span></div>
-      </div>
-      <p class="note">Ask which sizes are in stock for each product. Shops, restaurants, hotels and offices can order in bulk packs.</p>
+      <div class="prices"><div class="pcard"><h3>Hand Wash</h3><ul><li><span>500ml</span><b>95 birr</b></li></ul></div><div class="pcard"><h3>Dishwash Liquid</h3><ul><li><span>750ml</span><b>100 birr</b></li><li><span>5L</span><b>450 birr</b></li></ul></div><div class="pcard"><h3>Liquid Laundry Soap</h3><ul><li><span>1L</span><b>125 birr</b></li><li><span>2L</span><b>210 birr</b></li><li><span>5L</span><b>470 birr</b></li></ul></div></div>
+      <p class="note">Prices are in Ethiopian birr. Call us for large orders.</p>
     </section>
   </div>
 
@@ -359,6 +364,13 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             </div>
           </div>
           <div class="channel">
+            <div class="what"><small>Phone</small><strong>+251 924 384 348</strong></div>
+            <div class="acts">
+              <a class="btn small" href="tel:+251924384348">Call</a>
+              <button class="btn small ghost" type="button" data-copy="+251924384348">Copy</button>
+            </div>
+          </div>
+          <div class="channel">
             <div class="what"><small>Telegram</small><strong>DANOBA on Telegram</strong></div>
             <div class="acts"><a class="btn small" href="https://t.me/+_uCdSLae94YzNzA0">Open Telegram</a></div>
           </div>
@@ -380,13 +392,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
               </select>
             </label>
             <label for="size">Size
-              <select id="size" name="size">
-                <option>350ml</option>
-                <option>500ml</option>
-                <option>750ml</option>
-                <option>1L</option>
-                <option>5L</option>
-              </select>
+              <select id="size" name="size"></select>
             </label>
           </div>
           <div class="row">
@@ -399,6 +405,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <h3>Your cart</h3>
             <p class="empty" id="cartEmpty">Nothing yet. Choose a product above and tap Add to cart.</p>
             <ul id="cartList"></ul>
+            <p class="total" id="cartTotal" hidden><span>Total</span><b id="cartTotalNum"></b></p>
           </div>
 
           <label for="phone">Your phone number (required)<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0912 345 678"></label>
@@ -429,6 +436,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 <script>
 (function () {
   var ORDER_URL = "https://danoba-orders1.1kelectrical1616.workers.dev";
+  var PRICES = {"Hand wash": {"500ml": 95}, "Dishwash liquid": {"750ml": 100, "5L": 450}, "Liquid laundry soap": {"1L": 125, "2L": 210, "5L": 470}};
   var COLORS = {
     "Hand wash": ["Pink", "Orange", "Yellow", "Any color"],
     "Dishwash liquid": ["Green", "Blue", "Yellow", "Any color"],
@@ -449,6 +457,19 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   var note = document.getElementById("copyNote");
   var cart = [];
 
+  function money(n) { return n.toLocaleString("en-US") + " birr"; }
+
+  function fillSizes() {
+    var list = PRICES[product.value] || {};
+    sizeEl.textContent = "";
+    Object.keys(list).forEach(function (s) {
+      var o = document.createElement("option");
+      o.value = s;
+      o.textContent = s + " - " + money(list[s]);
+      sizeEl.appendChild(o);
+    });
+  }
+
   function fillColors() {
     var list = COLORS[product.value] || ["Any color"];
     colorEl.textContent = "";
@@ -458,7 +479,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       colorEl.appendChild(o);
     });
   }
-  product.addEventListener("change", fillColors);
+  product.addEventListener("change", function () { fillSizes(); fillColors(); });
+  fillSizes();
   fillColors();
 
   function qtyValue() {
@@ -471,12 +493,15 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   function renderCart() {
     cartList.textContent = "";
     cartEmpty.hidden = cart.length > 0;
+    var total = cart.reduce(function (a, it) { return a + it.qty * it.price; }, 0);
+    document.getElementById("cartTotal").hidden = cart.length === 0;
+    document.getElementById("cartTotalNum").textContent = money(total);
     cart.forEach(function (it, i) {
       var li = document.createElement("li");
       var s = document.createElement("span");
       s.textContent = it.qty + " x " + it.product + " ";
       var sm = document.createElement("small");
-      sm.textContent = it.size + ", " + it.color;
+      sm.textContent = it.size + ", " + it.color + " - " + money(it.qty * it.price);
       s.appendChild(sm);
       var b = document.createElement("button");
       b.type = "button";
@@ -491,7 +516,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   }
 
   function currentItem() {
-    return { product: product.value, size: sizeEl.value, color: colorEl.value, qty: qtyValue() };
+    var price = (PRICES[product.value] || {})[sizeEl.value] || 0;
+    return { product: product.value, size: sizeEl.value, color: colorEl.value, qty: qtyValue(), price: price };
   }
 
   document.getElementById("addBtn").addEventListener("click", function () {
@@ -509,6 +535,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   document.querySelectorAll("[data-pick]").forEach(function (b) {
     b.addEventListener("click", function () {
       product.value = b.getAttribute("data-pick");
+      fillSizes();
       fillColors();
       document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
     });
@@ -531,15 +558,16 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     }
     if (cart.length === 0) { cart.push(currentItem()); renderCart(); }
     var data = {
-      items: cart.slice(),
+      items: cart.map(function (it) { return { product: it.product, size: it.size, color: it.color, qty: it.qty }; }),
       phone: phone,
       note: document.getElementById("note").value.trim(),
       website: document.getElementById("website").value
     };
     var lines = ["Hello DANOBA, I would like to order:", ""];
     data.items.forEach(function (it, i) {
-      lines.push((i + 1) + ". " + it.qty + " x " + it.product + ", " + it.size + ", " + it.color);
+      lines.push((i + 1) + ". " + it.qty + " x " + it.product + ", " + it.size + ", " + it.color + " = " + money(it.qty * it.price));
     });
+    lines.push("", "Total: " + money(cart.reduce(function (a, it) { return a + it.qty * it.price; }, 0)));
     if (data.note) lines.push("", "Notes: " + data.note);
     lines.push("", "Phone: " + data.phone);
     msg.textContent = lines.join("\n");
@@ -558,6 +586,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       cart = [];
       renderCart();
       form.reset();
+      fillSizes();
       fillColors();
     }).catch(function () {
       statusEl.textContent = "We could not send your order. Copy the message below and send it to us on Telegram, or call us.";
